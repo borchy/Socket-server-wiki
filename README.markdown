@@ -5,8 +5,7 @@ It is a minimalistic wiki software.
 The socket server is my own as part of the learning experience.
 
 ## How to use:
-Simply start the server.rb file with a ruby interpter (version 1.9.1 at least)
-and pass your the host and port you wish to run the server on.
+Simply start the server.rb file with a ruby interpter (version 1.9.1 at least). Pass two parameters, the first is the host and the second is the port you wish to run the server on.
  
 ## Wiki specification:
 Type the name of the page you are looking for in the address bar 
