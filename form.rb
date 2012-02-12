@@ -11,12 +11,12 @@ class Form
   
   def self.form_page(title, page_name, page_contents) 
     contents = <<-HTML
-    #{title}
-    <form action="#{page_name}" method="post">
-      <textarea name="contents" cols=60 rows=30>#{page_contents}</textarea>
-      <br>
-      <input type="submit" value="Submit" />
-    </form>
+#{title}
+<form action="#{page_name}" method="post">
+  <textarea name="contents" cols=60 rows=30>#{page_contents}</textarea>
+  <br>
+  <input type="submit" value="Submit" />
+</form>
   HTML
   end
 end

@@ -22,7 +22,7 @@ class Server
         elsif /POST/.match http.request
           handle_post_request(http, navigator)
         else
-          navigator.error("<h1>ERROR</h1>")
+          navigator.error
         end        
       end
     end
@@ -39,7 +39,7 @@ class Server
     elsif page_match = /GET \/(\w+)\/edit\s/.match(request)
       html_content = request_edit_page(page_match[1], navigator)
     else
-      navigator.error("<h1>ERROR</h1>")
+      navigator.error
     end
     navigator.success(html_content) if html_content
   end
@@ -72,7 +72,7 @@ class Server
       Page.create_page(page_name, http.variables["contents"])
       navigator.redirect(page_name)
     else
-      navigator.error("<h1>ERROR</h1>")
+      navigator.error
     end
   end
 end

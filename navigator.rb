@@ -1,4 +1,5 @@
 require 'socket'
+require './page'
 
 class Navigator
   def initialize(socket)
@@ -9,16 +10,18 @@ class Navigator
     response("200 OK", html_content)
   end
 
-  def error(html_content)
-    response("404 Not Found", html_content)
+  def error
+    response("404 Not Found", Page.load_page("error.html"))
   end
 
   def response(status_code, html_content)
-    @socket.puts "HTTP/1.1 #{status_code}\n" +
-      "Content-Type: text/html\n" +
-      "Content-Length: #{html_content.size}\n" +
-      "\n" +
-      "#{html_content}"
+    @socket.puts <<-HTML
+HTTP/1.1 #{status_code}
+Content-Type: text/html
+Content-Length: #{html_content.size}
+
+#{html_content}    
+    HTML
     @socket.close
   end
 
