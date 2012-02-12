@@ -1,14 +1,14 @@
-= Socket server wiki
+# Socket server wiki
 
 This is my first shot at creating a web application.
 It is a minimalistic wiki software.
 The socket server is my own as part of the learning experience.
 
-== How to use:
+## How to use:
 Simply start the wiki.rb file with a ruby interpter (version 1.9.1 atleast)
 and enter your localhost on port 2009.
  
-== Wiki specification:
+## Wiki specification:
 Type the name of the page you are looking for in the address bar 
 * if the page exists, the server will show you its contents
 * if it doesn't, the server will load a page creation form, 
@@ -21,7 +21,7 @@ filled with the contents of the page
 * if the page doesn't exist,
 you will be redirected to the create page form
 
-== Formatting:
+## Formatting:
 For now the only available formatting is the carriage return.
 Which means that while in the create/edit page form when the user enters a new line
 it will be saved as a new line. Under the hood, the new line symbol
