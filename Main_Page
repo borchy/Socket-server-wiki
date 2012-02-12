@@ -1,16 +1,16 @@
-Main page<br>
-<br>
-This is the Hello World page of this wiki<br>
-<br>
-Quick specification:<br>
-Type the name of the page you are looking for in the address bar<br>
+Main page
+
+This is the Hello World page of this wiki
+
+Quick specification:
+Type the name of the page you are looking for in the address bar
 if the page exists, the server will show you its contents
-if it doesn't, the server will load a page creation form,<br>
-which on submiting will create the page and you will be redirected to it<br>
-If you want to edit a page<br>
+if it doesn't, the server will load a page creation form,
+which on submiting will create the page and you will be redirected to it
+If you want to edit a page
 enter the name of the page followed by "/edit"
-if the page exists, the server will load the edit page form,<br>
-filled with the contents of the page<br>
-upon submiting the form, you will be redirected to the new page<br>
-if the page doesn't exist,<br>
+if the page exists, the server will load the edit page form,
+filled with the contents of the page
+upon submiting the form, you will be redirected to the new page
+if the page doesn't exist,
 you will be redirected to the create page form
