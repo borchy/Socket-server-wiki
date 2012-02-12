@@ -9,6 +9,7 @@ Simply start the server.rb file with a ruby interpter (version 1.9.1 at least). 
  
 ## Wiki specification:
 Type the name of the page you are looking for in the address bar 
+
 * if the page exists, the server will show you its contents
 * if it doesn't, the server will load a page creation form, which on submiting will create the page and you will be redirected to it 
 * If you want to edit a page enter the name of the page followed by "/edit"
