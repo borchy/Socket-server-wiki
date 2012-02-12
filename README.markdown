@@ -16,6 +16,7 @@ Type the name of the page you are looking for in the address bar
 * if the page exists, the server will load the edit page form, filled with the contents of the page 
 * upon submiting the form, you will be redirected to the new page 
 * if the page doesn't exist, you will be redirected to the create page form
+* every other action will result in loading the error page
 
 ## Formatting:
 For now the only available formatting is the carriage return.
