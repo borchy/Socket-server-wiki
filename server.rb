@@ -18,39 +18,61 @@ class Server
         navigator = Navigator.new client
 
         if /GET/.match http.request
-          html_content = ""
-          if /\/\s/.match http.request
-            html_content = Page.load_html_page("Main_Page")
-          elsif page_match = /GET \/(\w+)\s/.match(http.request)
-            page_name = page_match[1]
-            if Page.page_exists? page_name
-              html_content = Page.load_html_page(page_name)
-            else
-              html_content = Form.create_page_form(page_name)
-            end
-          elsif page_match = /GET \/(\w+)\/edit\s/.match(http.request)
-            page_name = page_match[1]
-            if Page.page_exists? page_name
-              html_content = Form.edit_page_form(page_name, Page.load_page(page_name)) 
-            else
-              navigator.redirect(page_name)
-            end
-          else
-            navigator.error("<h1>ERROR</h1>")
-          end
-          navigator.success(html_content)
+          handle_get_request(http.request, navigator)
         elsif /POST/.match http.request
-          if page_match = /POST \/(\w+)/.match(http.request)
-            page_name = page_match[1]
-            Page.create_page(page_name, http.variables["contents"])
-            navigator.redirect(page_name)
-          else
-            navigator.error("<h1>ERROR</h1>")
-          end
+          handle_post_request(http, navigator)
         else
           navigator.error("<h1>ERROR</h1>")
         end        
       end
+    end
+  end
+
+  private
+
+  def handle_get_request(request, navigator)
+    html_content = ""
+    if /\/\s/.match request
+      html_content = request_index_page
+    elsif page_match = /GET \/(\w+)\s/.match(request)
+      html_content = request_page(page_match[1])
+    elsif page_match = /GET \/(\w+)\/edit\s/.match(request)
+      html_content = request_edit_page(page_match[1], navigator)
+    else
+      navigator.error("<h1>ERROR</h1>")
+    end
+    navigator.success(html_content) if html_content
+  end
+
+    def request_index_page
+    Page.load_html_page("Main_Page")
+  end
+  
+  def request_page(page_name)
+    html_content = ""
+    if Page.page_exists? page_name
+      html_content = Page.load_html_page(page_name)
+    else
+      html_content = Form.create_page_form(page_name)
+    end
+    html_content
+  end
+
+  def request_edit_page(page_name, navigator)
+    if Page.page_exists? page_name
+      html_content = Form.edit_page_form(page_name, Page.load_page(page_name))
+    else
+      navigator.redirect(page_name)
+    end
+  end
+
+  def handle_post_request(http, navigator)
+    if page_match = /POST \/(\w+)/.match(http.request)
+      page_name = page_match[1]
+      Page.create_page(page_name, http.variables["contents"])
+      navigator.redirect(page_name)
+    else
+      navigator.error("<h1>ERROR</h1>")
     end
   end
 end
