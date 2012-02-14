@@ -3,32 +3,45 @@ require './http'
 require './page'
 require './form'
 require './navigator'
+require './logger'
 
 class Server
   def initialize(host, port)
     @host = host
     @port = port
+    @loggers = []
   end
 
   def run
     server = TCPServer.new @host, @port
     loop do
       Thread.start(server.accept) do |client|
-        http = Http.new client
-        navigator = Navigator.new client
-
-        if /GET/.match http.request
-          handle_get_request(http.request, navigator)
-        elsif /POST/.match http.request
-          handle_post_request(http, navigator)
+        request = client.gets
+        if request.include? "logger"
+          Logger.add client
         else
-          navigator.error
-        end        
+          http = Http.new client, request
+          navigator = Navigator.new client
+
+          Logger.log "REQUEST<< #{http.request}"
+
+          handle_request(http, navigator)
+        end
       end
     end
   end
 
   private
+
+  def handle_request(http, navigator)
+    if /GET/.match http.request
+      handle_get_request(http.request, navigator)
+    elsif /POST/.match http.request
+      handle_post_request(http, navigator)
+    else
+      navigator.error
+    end        
+  end
 
   def handle_get_request(request, navigator)
     html_content = ""

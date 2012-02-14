@@ -6,9 +6,9 @@ class Http
   attr_reader :request
   attr_reader :variables
   
-  def initialize(socket)
+  def initialize(socket, request)
     @socket = socket
-    @request = socket.gets
+    @request = request
     @headers = parse_headers
     @variables = parse_variables
   end
