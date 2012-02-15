@@ -3,11 +3,12 @@
 This is my first shot at creating a web application.
 It is a minimalistic wiki software.
 The socket server is my own as part of the learning experience.
+I have also provided a logger client to track all server requests/responses.
 
-## How to use:
+## How to use
 Simply start the server.rb file with a ruby interpter (version 1.9.1 at least). Pass two parameters, the first is the host and the second is the port you wish to run the server on.
  
-## Wiki specification:
+## Wiki specification
 Type the name of the page you are looking for in the address bar 
 
 * if the page exists, the server will show you its contents
@@ -18,8 +19,15 @@ Type the name of the page you are looking for in the address bar
 * if the page doesn't exist, you will be redirected to the create page form
 * every other action will result in loading the error page
 
-## Formatting:
+## Formatting
 For now the only available formatting is the carriage return.
 Which means that while in the create/edit page form when the user enters a new line
 it will be saved as a new line. Under the hood, the new line symbol
 is converted to the <br> tag in HTML.
+
+## Logger client
+I have provided two files. One written in C and the other in Ruby.
+The tasks they perform are identical.
+All the client does is to connect to the server on the same host and port,
+and print in the standard output every server request and its respective response.
+To connect to the server simply start the client script with the host and port arguments.

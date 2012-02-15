@@ -90,5 +90,6 @@ class Server
   end
 end
 
-server = Server.new 'localhost', 2008
+raise ArgumentError, "Invalid number of arguments. Quad dotted IP address and port number expected" if ARGV.size != 2
+server = Server.new ARGV[0], ARGV[1].to_i
 server.run
