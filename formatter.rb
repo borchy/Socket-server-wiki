@@ -1,10 +1,6 @@
 # encoding: utf-8
 
 class Formatter
- def Formatter.lines_split(str)
-    str.lines.to_a << "\n"
-  end
-  
   def Formatter.markdown_to_html(markdown, included_tags = Hash.new(true))
     result = ""
     last_tag = :empty
@@ -13,22 +9,33 @@ class Formatter
       current_tag = tag_type(line)
       tag = create_tag(last_tag)
 
-      # TODO it could be simplified...I hope
-      if last_tag == current_tag and tag.multiline?
-        buffer.write(line)
-      elsif last_tag == current_tag and not tag.multiline?
-        result << tag.parse(buffer.read); buffer.write(line)
+      if last_tag == current_tag
+        if tag.multiline?
+          buffer.write(line)
+        else
+          result << tag.parse(buffer.read)
+          buffer.write(line)
+        end
       elsif last_tag == :empty and current_tag == :empty
         result << line
-      elsif last_tag != current_tag and current_tag != :empty
-        result << tag.parse(buffer.read); buffer.write(line);
-      elsif last_tag != current_tag and current_tag == :empty
-        result << tag.parse(buffer.read) << line
+      elsif last_tag != current_tag
+        if current_tag == :empty
+          result << tag.parse(buffer.read) << line
+        else
+          result << tag.parse(buffer.read)
+          buffer.write(line);
+        end
       end
       
       last_tag = current_tag
     end
     result[0..result.size - 2]
+  end
+
+  private
+  
+  def Formatter.lines_split(str)
+    str.lines.to_a << "\n"
   end
 
   def Formatter.tag_type(line)
@@ -70,6 +77,8 @@ class Link
     # TODO: duplication
     text.split("\n").map { |line| convert_line(line) }.join("\n")
   end
+
+  private
   
   def Link.convert_line(line)
     regex = /\[([[:alnum:][:punct:]\s]+)\]\(([[:alnum:][:punct:]\s]+)\)/
@@ -141,6 +150,25 @@ class TextStyleFactory
 end
 
 class TextStyleFormatting
+  def TextStyleFormatting.convert(line)
+    result = convert_words(line)
+    hash = first_index_per_tag(result)
+    first_tag, first_index, second_index = first_interval(hash, result)
+    if first_tag and second_index
+      first_tag_text = first_tag.to_s(convert_interval(result, first_index + first_tag.length, second_index + 1))
+      after_first_tag = convert_interval(result, second_index + first_tag.length + 1, result.size)
+      if first_index > 0
+        result[0..first_index-1] + first_tag_text + after_first_tag
+      else
+        first_tag_text + after_first_tag
+      end
+    else
+      result
+    end
+  end
+
+  private
+  
   def TextStyleFormatting.convert_words(line)
     tags = TextStyleFactory::create_all
     result = line.clone
@@ -184,23 +212,6 @@ class TextStyleFormatting
 
   def TextStyleFormatting.convert_interval(text, from, to)
     convert(text[from, to - from])
-  end
-
-  def TextStyleFormatting.convert(line)
-    result = convert_words(line)
-    hash = first_index_per_tag(result)
-    first_tag, first_index, second_index = first_interval(hash, result)
-    if first_tag and second_index
-      first_tag_text = first_tag.to_s(convert_interval(result, first_index + first_tag.length, second_index + 1))
-      after_first_tag = convert_interval(result, second_index + first_tag.length + 1, result.size)
-      if first_index > 0
-        result[0..first_index-1] + first_tag_text + after_first_tag
-      else
-        first_tag_text + after_first_tag
-      end
-    else
-      result
-    end
   end
 end
 
