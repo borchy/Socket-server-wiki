@@ -3,12 +3,8 @@ require "./formatter"
 require "test/unit"
 
 class TestFormatter < Test::Unit::TestCase
-  def setup
-    @formatter = Formatter.new
-  end
-
   def compare(input, result)
-    assert_equal(result, @formatter.markdown_to_html(input))
+    assert_equal(result, Formatter::markdown_to_html(input))
   end
   
   def test_paragraphs

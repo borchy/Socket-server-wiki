@@ -1,34 +1,11 @@
 # encoding: utf-8
 
-class Buffer
-  def initialize(text = "")
-    @text = text
-  end
-
-  def read
-    result = @text.clone
-    @text.clear
-    result
-  end
-
-  def write(text)
-    @text << text
-  end
-end
-
 class Formatter
-  attr_reader :markdown_text
-  
-  def initialize(markdown_text = "")
-    raise ArgumentError, "Please provide an actual string" unless markdown_text
-    @markdown_text = markdown_text
-  end
-
- def lines_split(str)
+ def Formatter.lines_split(str)
     str.lines.to_a << "\n"
   end
   
-  def markdown_to_html(markdown, included_tags = Hash.new(true))
+  def Formatter.markdown_to_html(markdown, included_tags = Hash.new(true))
     result = ""
     last_tag = :empty
     buffer = Buffer.new
@@ -53,26 +30,32 @@ class Formatter
     end
     result[0..result.size - 2]
   end
-  
-  def to_html
-    markdown_to_html(@markdown_text)
-  end
 
-  def tag_type(line)
+  def Formatter.tag_type(line)
     [:header, :code, :quote, :ordered_list, :unordered_list, :empty, :paragraph].each do |tag|
       return tag if create_tag(tag).regex =~ line
     end
   end
 
-  def create_tag(tag)
+  def Formatter.create_tag(tag)
     camel_case = tag.to_s.split("_").map(&:capitalize).join
     Kernel.eval(camel_case).new
   end
-  
-  alias to_s to_html
+end
 
-  def inspect
-    markdown_text
+class Buffer
+  def initialize(text = "")
+    @text = text
+  end
+
+  def read
+    result = @text.clone
+    @text.clear
+    result
+  end
+
+  def write(text)
+    @text << text
   end
 end
 
@@ -315,11 +298,10 @@ class Quote < Tag
   end
 
   def parse(text)
-    formatter = Formatter.new
     included_tags = Hash.new(false)
     included_tags[:paragraph] = true
     included_tags[:empty] = true
-    content = formatter.markdown_to_html(text.split("\n").map{ |line| regex.match(line)[1] }.join("\n"), included_tags)
+    content = Formatter::markdown_to_html(text.split("\n").map{ |line| regex.match(line)[1] }.join("\n"), included_tags)
     if text.end_with? "\n"
       "<blockquote>" + content.chomp + "</blockquote>" + "\n"
     else
