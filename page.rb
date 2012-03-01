@@ -18,6 +18,6 @@ class Page
   end
 
   def self.load_html_page(page_name)
-    Formatter.convert_to_html(load_page(page_name))
+    Formatter.new(load_page(page_name)).to_html
   end
 end
