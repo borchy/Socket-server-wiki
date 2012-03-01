@@ -82,7 +82,8 @@ class Server
   def handle_post_request(http, navigator)
     if page_match = /POST \/(\w+)/.match(http.request)
       page_name = page_match[1]
-      Page.create_page(page_name, http.variables["contents"])
+      contents = http.variables["contents"].gsub("\r\n", "\n")
+      Page.create_page(page_name, contents)
       navigator.redirect(page_name)
     else
       navigator.error
