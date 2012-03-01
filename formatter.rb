@@ -1,5 +1,21 @@
 # encoding: utf-8
 
+class Buffer
+  def initialize(text = "")
+    @text = text
+  end
+
+  def read
+    result = @text.clone
+    @text.clear
+    result
+  end
+
+  def write(text)
+    @text << text
+  end
+end
+
 class Formatter
   attr_reader :markdown_text
   
@@ -57,22 +73,6 @@ class Formatter
 
   def inspect
     markdown_text
-  end
-end
-
-class Buffer
-  def initialize(text = "")
-    @text = text
-  end
-
-  def read
-    result = @text.clone
-    @text.clear
-    result
-  end
-
-  def write(text)
-    @text << text
   end
 end
 
@@ -236,7 +236,7 @@ class Empty
   end
 
   def regex
-    /^\r$/
+    /^$/
   end
 
   def parse(text)
