@@ -57,7 +57,7 @@ class Server
     navigator.success(html_content) if html_content
   end
 
-    def request_index_page
+  def request_index_page
     Page.load_html_page("Main_Page")
   end
   

@@ -21,9 +21,9 @@ Third line.
 END
     output = <<-END
 <p>First line.</p>
-
+<br/>
 <p>Second line.</p>
-
+<br/>
 <p>Third line.</p>
 END
     compare(input, output)
@@ -36,17 +36,15 @@ Third line.
 Last line, of course.
 END
     output = <<-END
-<p>First line.
-Second line.
+<p>First line.<br/>
+Second line.<br/>
 Third line.</p>
-
+<br/>
 <p>Last line, of course.</p>
 END
     compare(input, output)
 
-    input = ""
-    output = ""
-    compare(input, output)
+    compare("", "")
 
     input = <<-END
 Cats & Cash
@@ -55,7 +53,7 @@ Cool, <right>?
 END
     output = <<-END
 <p>Cats &amp; Cash</p>
-
+<br/>
 <p>Cool, &lt;right&gt;?</p>
 END
     compare(input, output)
@@ -71,7 +69,7 @@ END
 <p>First line.</p>
 <h1>Header...</h1>
 <p>Third line.</p>
-
+<br/>
 <p>Separate line</p>
 END
     compare(input, output)
@@ -119,7 +117,7 @@ END
 END
     output = <<-END
 <pre><code>First code-block</code></pre>
-
+<br/>
 <pre><code>Second block of code</code></pre>
 END
     compare(input, output)
@@ -161,13 +159,13 @@ More paragraphs there?
 END
     output = <<-END
 <h1>This is a header</h1>
-
+<br/>
 <p>Some parahraphs here</p>
-
+<br/>
 <pre><code>Some clean code
 Which is also beautiful
 And maybe also compiles!</code></pre>
-
+<br/>
 <p>More paragraphs there?</p>
 END
     compare(input, output)
@@ -182,8 +180,8 @@ END
 > Third line.
 END
     output = <<-END
-<blockquote><p>First line.
-Second line.
+<blockquote><p>First line.<br/>
+Second line.<br/>
 Third line.</p></blockquote>
 END
     compare(input, output)
@@ -195,7 +193,7 @@ END
 END
     output = <<-END
 <blockquote><p>First quote.</p></blockquote>
-
+<br/>
 <blockquote><p>Second quote.</p></blockquote>
 END
     compare(input, output)
@@ -207,7 +205,7 @@ END
 END
     output = <<-END
 <blockquote><p>First quote.</p>
-
+<br/>
 <p>Second quote.</p></blockquote>
 END
     compare(input, output)
@@ -290,8 +288,8 @@ END
 4. Четвърто
 END
     output = <<-END
-<p>1) Първо.
-2 Второ.
+<p>1) Първо.<br/>
+2 Второ.<br/>
 3.Трето</p>
 <ol>
   <li>Четвърто</li>

@@ -20,10 +20,8 @@ Type the name of the page you are looking for in the address bar
 * every other action will result in loading the error page
 
 ## Formatting
-For now the only available formatting is the carriage return.
-Which means that while in the create/edit page form when the user enters a new line
-it will be saved as a new line. Under the hood, the new line symbol
-is converted to the <br> tag in HTML.
+I have implemented part of the markdown language. 
+For now it supports paragraphs, headers (from 1 to 4), links (still a bug there), lists (ordered and unordered), quotes and code. The only text styles for now are bold and italic which don't actually adhere to the Markdown specification. The difference in my implementation is that the italics tag is created by using "_" on both sides of the phrase.
 
 ## Logger client
 I have provided two files. One written in C and the other in Ruby.

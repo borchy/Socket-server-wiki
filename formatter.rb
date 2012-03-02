@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+NEW_LINE = "<br/>\n"
+
 class Formatter
   def Formatter.markdown_to_html(markdown, included_tags = Hash.new(true))
     result = ""
@@ -8,28 +10,29 @@ class Formatter
     lines_split(markdown).each do |line|
       current_tag = tag_type(line)
       tag = create_tag(last_tag)
-
-      if last_tag == current_tag
+      
+      if last_tag == current_tag and current_tag != :empty
         if tag.multiline?
           buffer.write(line)
         else
           result << tag.parse(buffer.read)
           buffer.write(line)
         end
-      elsif last_tag == :empty and current_tag == :empty
-        result << line
       elsif last_tag != current_tag
         if current_tag == :empty
-          result << tag.parse(buffer.read) << line
+          result << tag.parse(buffer.read) << NEW_LINE
         else
           result << tag.parse(buffer.read)
           buffer.write(line);
         end
+      else
+        result << NEW_LINE
       end
       
       last_tag = current_tag
     end
-    result[0..result.size - 2]
+
+    result.size - (NEW_LINE.size + 1) > 0 ? result[0..result.size - (NEW_LINE.size+1)] : ""
   end
 
   private
@@ -270,7 +273,6 @@ class Code < Tag
   end
   
   def parse(text)
-    print text.lines.to_a
     content = text.lines.map{ |line| parse_line(regex.match(line)[1], true, false , false) }.join
     if text.end_with? "\n"
       "<pre><code>" + content.chomp + "</code></pre>" + "\n"
@@ -290,7 +292,7 @@ class Paragraph < Tag
   end
   
   def parse(text)
-    content = text.lines.map { |line| parse_line(line) }.join("\n")
+    content = text.lines.map { |line| parse_line(line) }.join(NEW_LINE)
     if text.end_with? "\n"
       "<p>" + content.chomp + "</p>" + "\n"
     else
